@@ -28,18 +28,44 @@ function addLabel(layer, id) {
   // This is ugly but there is no getContainer method on the tooltip :(
   if (layer.getTooltip()) {
       var label = layer.getTooltip()._source._tooltip._container;
-      if (label) {
+if (label) {
+    // Estilo da borda no texto
+    label.style.color = "white";
+    label.style.webkitTextStroke = "1px black"; // Chrome, Safari, Edge
+    label.style.fontWeight = "bold";
 
-        // We need the bounding rectangle of the label itself
-        var rect = label.getBoundingClientRect();
+    // Fallback para outros browsers (borda simulada com sombras)
+    label.style.textShadow = `
+      -1px -1px 0 black,
+       1px -1px 0 black,
+      -1px  1px 0 black,
+       1px  1px 0 black
+    `;
 
-        // We convert the container coordinates (screen space) to Lat/lng
-        var bottomLeft = map.containerPointToLatLng([rect.left, rect.bottom]);
-        var topRight = map.containerPointToLatLng([rect.right, rect.top]);
-        var boundingBox = {
-          bottomLeft : [bottomLeft.lng, bottomLeft.lat],
-          topRight   : [topRight.lng, topRight.lat]
-        };
+    // Depois continua com o resto normalmente...
+    var rect = label.getBoundingClientRect();
+    var bottomLeft = map.containerPointToLatLng([rect.left, rect.bottom]);
+    var topRight = map.containerPointToLatLng([rect.right, rect.top]);
+    var boundingBox = {
+      bottomLeft : [bottomLeft.lng, bottomLeft.lat],
+      topRight   : [topRight.lng, topRight.lat]
+    };
+
+    labelEngine.ingestLabel(
+      boundingBox,
+      id,
+      parseInt(Math.random() * (5 - 1) + 1), // Weight
+      label,
+      "Test " + id,
+      false
+    );
+
+    if (!layer.added) {
+      layer.addTo(map);
+      layer.added = true;
+    }
+}
+;
 
         // Ingest the label into labelgun itself
         labelEngine.ingestLabel(
