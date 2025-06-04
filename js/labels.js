@@ -31,8 +31,7 @@ function addLabel(layer, id) {
 if (label) {
     // Estilo da borda no texto
     label.style.color = "white";
-    label.style.border = "2px solid red"; // só para ver se o estilo pega
-    label.style.webkitTextStroke = "3px white"; // Chrome, Safari, Edge
+    label.style.webkitTextStroke = "1px white"; // Chrome, Safari, Edge
     label.style.fontWeight = "bold";
 
     // Fallback para outros browsers (borda simulada com sombras)
