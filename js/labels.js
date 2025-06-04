@@ -30,7 +30,7 @@ function addLabel(layer, id) {
       var label = layer.getTooltip()._source._tooltip._container;
 if (label) {
     // Estilo da borda no texto
-    label.style.color = "white";
+    label.style.color = "black";
     label.style.webkitTextStroke = "1px white"; // Chrome, Safari, Edge
     label.style.fontWeight = "bold";
 
